@@ -10,9 +10,13 @@ class Image
 	end
 	
 	def output_image		
-		puts "#{self.row1},\n#{self.row2},\n#{self.row3},\n#{self.row4}"	
+		@image.each do |i|
+#			puts i.to_s
+			row = i.join
+			puts "#{row}"
+		end
 	end	
+	
 end
-
 image = Image.new([0, 0, 0, 0], [0, 1, 0, 0], [0, 0, 0, 1], [0, 0, 0, 0])
 image.output_image
