@@ -11,7 +11,6 @@ class Image
 	
 	def output_image		
 		@image.each do |i|
-#			puts i.to_s
 			row = i.join
 			puts "#{row}"
 		end
