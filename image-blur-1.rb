@@ -21,7 +21,7 @@ class Image
 		@image.map do |row|
 			if row.index(1)
 				row[row.index(1)]=[1, 1]
-				if row.index(1) = 0
+				if row.index(1) == 0
 					row.flatten!
 					row[0].delete
 				else			
@@ -30,9 +30,9 @@ class Image
 				end
 	    transform_array << row
 #figure out for top and bottom rows
-	    end
+	    	end
+		end
 	end
-
 # #possible solution #2
 # #first row
 # 	@image.each do |row|
