@@ -18,7 +18,7 @@ class Image
 # 		end
 # 	end	
 	
- 	def blur
+ 		def blur
     		@image.each do |row|   		
      			row[row.index(1) + 1] == 1
     			row[row.index(1) - 1] == 1 				
