@@ -17,9 +17,11 @@ class Image
 	
  	def transform
 #possible solution #1
-		transform_array = @image.map do |row|
+		transform_array = []
+		@image.map do |row|
 			row[row.index(1) + 1] == 1
 	    	row[row.index(1) - 1] == 1
+	    transform_array << row
 #figure out for top and bottom rows
 	    end
 	end
