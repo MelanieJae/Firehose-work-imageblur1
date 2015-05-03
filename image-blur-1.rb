@@ -19,8 +19,15 @@ class Image
 #possible solution #1
 		transform_array = []
 		@image.map do |row|
-			row[row.index(1) + 1] == 1
-	    	row[row.index(1) - 1] == 1
+			if row.index(1)
+				row[row.index(1)]=[1, 1]
+				if row.index(1) = 0
+					row.flatten!
+					row[0].delete
+				else			
+					row.flatten!
+					row.last.delete
+				end
 	    transform_array << row
 #figure out for top and bottom rows
 	    end
