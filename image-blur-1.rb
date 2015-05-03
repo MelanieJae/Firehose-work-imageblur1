@@ -1,7 +1,7 @@
 class Image
 	
-	def initialize(*rows) 
-		@image = []
+	def initialize(row1, *rows) 
+		@image = [row1]
  		rows.each do |row|
 			@image << row
 		end
