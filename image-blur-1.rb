@@ -1,12 +1,16 @@
 class Image
-	
-	def initialize(row1, *rows) 
-		@image = [row1]
- 		rows.each do |row|
-			@image << row
-		end
-	end
-	
+
+   	def initialize(row1,*rows)
+      @image = []
+      @row1 = row1
+      @image << @row1
+      @rows = rows
+      @image << @rows
+      
+#    puts @image
+   	end
+
+
 #loop only for blur #1	
 # #	def output_image		
 # 		@image.each do |i|
@@ -15,45 +19,62 @@ class Image
 # 		end
 # 	end	
 	
- 	def transform
-#possible solution #1
-		transform_array = []
-		@image.map do |row|
-			if row.index(1)
-				row[row.index(1)]=[1, 1]
-				if row.index(1) == 0
-					row.flatten!
-					row[0].delete
-				else			
-					row.flatten!
-					row.last.delete
-				end
-	    transform_array << row
-#figure out for top and bottom rows
-	    	end
-		end
-	end
-# #possible solution #2
-# #first row
-# 	@image.each do |row|
-# 		if @image.index(row) = 0 
-# 			row[row.index(1) + 1] == 1
-# 	    	row[row.index(1) - 1] == 1
-# 			below = row.index(1)
-# 			row[below] == 1	# <=fix this
-# #middle rows
-#     	elsif
-#     	if @image.index(row)    		
-#      		row[row.index(1) + 1] == 1
-#     		row[row.index(1) - 1] == 1
-#     		above_below = row.index(1)
-#     		row[above_below] == 1 		
-#     	end		
-# #last row
-# 		else
-# 			row[row.index(1) + 1] == 1
-#     		row[row.index(1) - 1] == 1   			
-# 	end
+	def scan
+#    @row1.each_index {|x| puts x}
+#    @rows.each {|x| puts x}
+
+    @row1.each do |x|
+      @idx = []
+      if x == 1
+        puts @row1.index(x)
+        @idx << @row1.index(x)
+      else
+        @idx << -1
+      end 
+    end
+
+#    @rows.each do |x|
+      @array = []
+      @array << @rows[0].to_a
+      puts @array
+      puts @array.include?(1)
+#      puts @array.index(1)
+#      end
+#      @array.each do |y|
+#        if y == 1
+#          puts @array.index(y)
+#        end   
+#        puts @rows.index(1)
+#       @temprow = []
+#       @temprow << x
+#       @temprow.each do |y|
+#         if y == 1
+#           puts @temprow.index(y)
+# #         @idx << @rows.index(x)
+#         else
+#           puts -1
+# #         @idx << -1
+#         end
+# #      puts @idx
+#      end
+ 	  
+  end
+ 	# def transform
+	 # 	new_image = @image.dup 
+  # 		puts new_image
+  # 		x = 1
+ 	# 	new_image[x+1] = 1
+ 	#     new_image[x-1] = 1
+ 	#     # new_image[x][y+1] = 1
+ 	#     # new_image[x][y-1] = 1
+ 	#     puts new_image
+  #   end
+#	puts @idx	
+#	puts new_image
+#	@image = new_image
+#	end
+
 end
 image = Image.new([0, 0, 0, 0], [0, 1, 0, 0], [0, 0, 0, 1], [0, 0, 0, 0])
-image.transform
+image.scan
+#image.transform
