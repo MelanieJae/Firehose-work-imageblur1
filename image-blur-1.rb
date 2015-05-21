@@ -13,13 +13,16 @@ class Image
 # 'radially' expanding square that covers more than the manhattan distance, 
 #checking that positions around the original pixel don't go outside the bounds
       @pixels.each_index do |x|
-  
-# 'instantiates' @pixels[x+1] so that its indices can be used in the y loop
-# because the y loop only reads the index of pixels[x]
           @pixels[x].each_index do |y|     
               if @pixels[x][y] == 1
                 if y-1 >= 0 and y != 3
                   pixels_copy[x][y-1] = 1
+# allows changing of pixels on the inside without interfering with already-changed 1s
+# or 0s that shouldn't be changed.
+# e.g. when the first 1 is at [x][y] and the 
+# second 1 is at [x+1][y+2] or possibly vice versa, second 1 is at [x-1][y+2], connection
+# to manhattan distance suggestion re: absolute value of differences in x and y to trace
+# the boundary of the blur?
                   if x-1 >= 0 and x != 3
                     pixels_copy[x+1][y+1] = 1
                   end
