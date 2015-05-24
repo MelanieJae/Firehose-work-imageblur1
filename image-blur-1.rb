@@ -4,51 +4,100 @@ class Image
         @pixels = rows
       end
 	
-	   def blur
+	   def blur(md)
 # make copy of original to modify as I scan through the original
 # without changing it
       pixels_copy = @pixels.clone
-   
-# abs value of change in x and y is no more than val of var distance
-# 'radially' expanding square that covers more than the manhattan distance, 
-#checking that positions around the original pixel don't go outside the bounds
-      @pixels.each_index do |x|
-          @pixels[x].each_index do |y|     
-              if @pixels[x][y] == 1
-                if y-1 >= 0 and y != (@pixels[x].length - 1)
-                  pixels_copy[x][y-1] = 1
-# allows changing of pixels on the inside without interfering with already-changed 1s
-# or 0s that shouldn't be changed.
-# e.g. when the first 1 is at [x][y] and the 
-# second 1 is at [x+1][y+2] or possibly vice versa, second 1 is at [x-1][y+2], connection
-# to manhattan distance suggestion re: absolute value of differences in x and y to trace
-# the boundary of the blur? (also connection to knight's move in chess game?)
-                  if x-1 >= 0 and x != (@pixels.length - 1)
-                    pixels_copy[x+1][y+1] = 1
-                  end
-                end
-                if x-1 >= 0 and x != (@pixels.length - 1)
-                  pixels_copy[x-1][y] = 1
-                end        
-                if y == (@pixels[x].length - 1) and x!= (@pixels.length - 1)
-                 pixels_copy[x+1][y] = 1
-                 pixels_copy[x-1][y] = 1
-                 pixels_copy[x][y-1] = 1
-                end
-                if x == (@pixels.length - 1) and y != (@pixels[x].length - 1)
-                  pixels_copy[x][y+1] = 1
-                  pixels_copy[x][y-1] = 1 
+    
+# 1. Since there can be several combinations of numbers that, when their AVs are added together, equal
+#   the MD depending on what the MD is, increment either dx or dy by 1 starting at 0 on each loop through
+#   the exceptions below so that the dx and dy reset and don't keep incrementing beyond the 
+#   bounds of the array. 
+# 2. The dy (if you're incrementing dx) or dx (if you're incrementing dy) will
+#   also change but never in a way where the two do not add up to MD
+     
+      
+      @md = md
+        @pixels.each_index do |x|
+            @pixels[x].each_index do |y| 
+                if @pixels[x][y] == 1
+                    @dx = 0
+                    @dy = @md - @dx
+                    if y-@dy >= 0 and y+@dy < (@pixels[x].length - 1)
+                     if x-@dx >= 0 and x+@dx < (@pixels.length - 1)
+
+#  The intent of the while loop is to start at dx=0 or dy=0 to get the furthermost pixels, then increment dx by 1
+# and decrement dy (or vice versa) to get furthermost pixels in the other direction, then increment and decrement again
+# to loop through the next innermost pixels that need to be changed and so on until the other of dx and dy is zero.
+
+# Note: this loop does not work for md=1 because what I want to do is loop through and change the pixels, increment
+# and decrement as explained above and then loop through the pixel code lines again but not increment/decrement.
+                          while @dx < @md
+                            
+                            pixels_copy[x-@dx][y] = 1
+                            pixels_copy[x+@dx][y] = 1
+                            pixels_copy[x][y-@dy] = 1
+                            pixels_copy[x][y+@dy] = 1
+                            @dx += 1
+                            @dy -= 1                        
+                            
+                          end 
+                           
+                      end   
+                   end
+                         
+                  
+                    if y+@dy == (@pixels[x].length - 1) and x+@dx != (@pixels.length - 1)
+# resets dx and dy so incremented dxs and dys from other 
+# loops don't get carried over in this loop.
+                       dx = 0
+                       dy = @md - dx 
+                       while dx < @md
+                         pixels_copy[x+dx][y] = 1
+                         pixels_copy[x-dx][y] = 1
+                         pixels_copy[x][y-dy] = 1
+                      
+                          dx += 1
+                          dy -= 1                       
+                      
+                      end
+                    end
+                    
+                    if x+@dx == (@pixels.length - 1) and y+dy != (@pixels[x].length - 1)
+# resets dx and dy so incremented dxs and dys from other 
+# loops don't get carried over in this loop.
+                        dx = 0
+                        dy = @md - dx 
+                        while dx < @md
+                            pixels_copy[x][y+dy] = 1
+                            pixels_copy[x][y-dy] = 1 
+                            dx += 1 
+                            dy -= 1                        
+                        end
+                    end 
                 end
 
-              end
-          end
+                
+            end
+        end
         
-      end   
+
       @pixels = pixels_copy
-      puts @pixels
+    
       
+     end
+
+    def output   
+        @pixels.each do |i|
+            puts i.to_s
+        end
+        
     end
+    
 end
 
 image = Image.new([[0, 0, 0, 0], [0, 1, 0, 0], [0, 0, 0, 1], [0, 0, 0, 0]])
-image.blur
+#image = Image.new([[0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 1, 0, 0, 0], [0, 0, 0, 1, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0]])
+image.blur(2)
+image.output
+
