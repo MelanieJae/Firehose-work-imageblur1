@@ -19,6 +19,9 @@ class Image
                   if y+md < (@pixels[x].length - 1) and y-md >= 0
                     if x-md >= 0 and x+md < (@pixels.length - 1)  
                       (md+1).times do |a|
+          #puts statement keeps track of loop to let me know when 
+          # the loop isn't working right
+          #expected output: 0,1,2 only once for md = 2
                         puts a   
                     
                         pixels_copy[x-a][y+a] = 1
